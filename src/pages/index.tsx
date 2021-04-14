@@ -1,4 +1,5 @@
-import { Header, Content, SearchBox, WorldInfo, Card } from '../styles/pages/Home'
+import { Header, Content, SearchBox, WorldInfo, SectionTitle, CountryStats, Card, Classification, Country, Footer } from '../styles/pages/Home'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       </Header>
 
       <Content>
+        <div className="background"/>
         <form>
           <SearchBox>
             <input type="text" placeholder="Country"/>
@@ -26,102 +28,171 @@ export default function Home() {
         </form>
 
         <WorldInfo>
-          <section>
+          <SectionTitle>
             <img src="/icons/map.svg" alt="Map"/>
             <div>
               <strong>World Scenary</strong>
               <span>Last update: 12 Apr 2021</span>
             </div>
-          </section>
+          </SectionTitle>
           <div>
             <Card>
               <p>Infected</p>
               <div>
-                <img src="/icons/arrow.svg" alt="up/down"/>
-                <span>27k</span>
+                <div>
+                  <img src="/icons/arrow.svg" alt="up/down"/>
+                  <span>27k</span>
+                </div>
+                <strong>132135463</strong>
               </div>
-              <strong>132135463</strong>
             </Card>
             <Card>
               <p>Active</p>
               <div>
-                <img src="/icons/arrow.svg" alt="up/down"/>
-                <span>27k</span>
+                <div>
+                  <img src="/icons/arrow.svg" alt="up/down"/>
+                  <span>27k</span>
+                </div>
+                <strong>132135463</strong>
               </div>
-              <strong>132135463</strong>
             </Card>
             <Card>
               <p>Deceased</p>
               <div>
-                <img src="/icons/arrow.svg" alt="up/down"/>
-                <span>27k</span>
+                <div>
+                  <img src="/icons/arrow.svg" alt="up/down"/>
+                  <span>27k</span>
+                </div>
+                <strong>132135463</strong>
               </div>
-              <strong>132135463</strong>
             </Card>
             <Card>
               <p>Recovered</p>
               <div>
-                <img src="/icons/arrow.svg" alt="up/down"/>
-                <span>27k</span>
+                <div>
+                  <img src="/icons/arrow.svg" alt="up/down"/>
+                  <span>27k</span>
+                </div>
+                <strong>132135463</strong>
               </div>
-              <strong>132135463</strong>
             </Card>
           </div>
         </WorldInfo>
      
-        {/* <div>
-          <section>
+        <CountryStats>
+          <SectionTitle>
+            <img src="/icons/map.svg" alt="Map"/>
             <div>
-              <img src="/icons/map.svg" alt="Map"/>
-              <div>
-                <strong>Brazil, BR</strong>
-                <span>Last update: 1 hour ago</span>
-              </div>
+              <strong>Brazil, BR</strong>
+              <span>Last update: 1 hour ago</span>
             </div>
-          </section>
-
-          <nav>
-            <p>Infected</p>
-            <p>Active</p>
-            <p>Deceased</p>
-            <p>Recovered</p>
-          </nav>
+          </SectionTitle>
 
           <div>
-            <img src="/icons/arrow.svg" alt="up/down"/>
-            <span>27k</span>
-            <strong>132456798</strong>
+            <nav>
+              <button type="button">Infected</button>
+              <button type="button">Active</button>
+              <button type="button">Deceased</button>
+              <button type="button">Recovered</button>
+            </nav>
+
+            <div>
+              <div>
+                <img src="/icons/arrow.svg" alt="up/down"/>
+                <span>27k</span>
+              </div>
+              <strong>132456798</strong>
+              <div className="chart"/>
+            </div>
+
           </div>
 
-          <div>
-            Chart
-          </div>
+        </CountryStats>
 
-        </div>
-
-        <div>
-          <section>
+        <Classification>
+          <SectionTitle>
+            <img src="/icons/sort.svg" alt="Sort"/>
             <div>
-              <img src="/icons/map.svg" alt="Map"/>
-              <div>
-                <strong>Death by country</strong>
-                <span>Last update: 12 Apr 2021</span>
-              </div>
+              <strong>Death by country</strong>
+              <span>Last update: 12 Apr 2021</span>
             </div>
-          </section>
+          </SectionTitle>
 
           <div>
-            <div>
-              <img src="/icons/flag.svg" alt="Flags"/>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
               <p>United States</p>
               <strong>1321544688</strong>
-            </div>
+            </Country>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
+              <p>United States</p>
+              <strong>1321544688</strong>
+            </Country>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
+              <p>United States</p>
+              <strong>1321544688</strong>
+            </Country>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
+              <p>United States</p>
+              <strong>1321544688</strong>
+            </Country>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
+              <p>United States</p>
+              <strong>1321544688</strong>
+            </Country>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
+              <p>United States</p>
+              <strong>1321544688</strong>
+            </Country>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
+              <p>United States</p>
+              <strong>1321544688</strong>
+            </Country>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
+              <p>United States</p>
+              <strong>1321544688</strong>
+            </Country>
+            <Country>
+              {/* <img src="/icons/flag.svg" alt="Flags"/> */}
+              <span />
+              <p>United States</p>
+              <strong>1321544688</strong>
+            </Country>
           </div>
-
-
-        </div> */}
+        </Classification>
 
       </Content>
+
+      <Footer>
+        <span>Developed by Maycon</span>
+        <div>
+          <Link href="https://github.com/mayconrr13">
+            <a>
+            <img src="/icons/github.svg" alt="Github"/>
+            </a>
+          </Link>
+          <Link href="https://www.linkedin.com/in/mayconreisrosario/">
+            <a>
+              <img src="/icons/linkedin.svg" alt="Linkedin"/>
+            </a>
+          </Link>
+        </div>
+      </Footer>
     </>
   )
 }

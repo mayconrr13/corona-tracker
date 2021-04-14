@@ -36,6 +36,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background: var(--gray-900);
+    width: 100vw;
     color: var(--text);
     -webkit-font-smoothing: antialiased;
   }
