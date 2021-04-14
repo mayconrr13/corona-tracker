@@ -1,4 +1,4 @@
-import { Header, Content, SearchBox, WorldInfo, SectionTitle, CountryStats, Card, Classification, Country, Footer } from '../styles/pages/Home'
+import { Header, Background, Content, SearchBox, WorldInfo, SectionTitle, CountryStats, Card, Classification, Country, Footer } from '../styles/pages/Home'
 import Link from 'next/link'
 
 export default function Home() {
@@ -8,77 +8,26 @@ export default function Home() {
         <div>
           <img src="/logo.svg" alt="Logo"/>
 
-          <button type="button">
+          {/* <button type="button">
             <span></span>
             <span></span>
             <span></span>
-          </button>
+          </button> */}
         </div>
       </Header>
+        
+      <Background/>
 
       <Content>
-        <div className="background"/>
-        <form>
-          <SearchBox>
+        <SearchBox>
+          <div>
             <input type="text" placeholder="Country"/>
             <button>
               <img src="/icons/search.svg" alt="Search"/>
             </button>
-          </SearchBox>
-        </form>
-
-        <WorldInfo>
-          <SectionTitle>
-            <img src="/icons/map.svg" alt="Map"/>
-            <div>
-              <strong>World Scenary</strong>
-              <span>Last update: 12 Apr 2021</span>
-            </div>
-          </SectionTitle>
-          <div>
-            <Card>
-              <p>Infected</p>
-              <div>
-                <div>
-                  <img src="/icons/arrow.svg" alt="up/down"/>
-                  <span>27k</span>
-                </div>
-                <strong>132135463</strong>
-              </div>
-            </Card>
-            <Card>
-              <p>Active</p>
-              <div>
-                <div>
-                  <img src="/icons/arrow.svg" alt="up/down"/>
-                  <span>27k</span>
-                </div>
-                <strong>132135463</strong>
-              </div>
-            </Card>
-            <Card>
-              <p>Deceased</p>
-              <div>
-                <div>
-                  <img src="/icons/arrow.svg" alt="up/down"/>
-                  <span>27k</span>
-                </div>
-                <strong>132135463</strong>
-              </div>
-            </Card>
-            <Card>
-              <p>Recovered</p>
-              <div>
-                <div>
-                  <img src="/icons/arrow.svg" alt="up/down"/>
-                  <span>27k</span>
-                </div>
-                <strong>132135463</strong>
-              </div>
-            </Card>
           </div>
-        </WorldInfo>
-     
+        </SearchBox>
+       
         <CountryStats>
           <SectionTitle>
             <img src="/icons/map.svg" alt="Map"/>
@@ -101,14 +50,67 @@ export default function Home() {
                 <img src="/icons/arrow.svg" alt="up/down"/>
                 <span>27k</span>
               </div>
-              <strong>132456798</strong>
-              <div className="chart"/>
+              <strong>20000000</strong>
             </div>
+
+            <div className="chart"/>
 
           </div>
 
         </CountryStats>
 
+        <WorldInfo>
+          <SectionTitle>
+            <img src="/icons/map.svg" alt="Map"/>
+            <div>
+              <strong>World Scenary</strong>
+              <span>Last update: 12 Apr 2021</span>
+            </div>
+          </SectionTitle>
+          <div>
+            <Card>
+              <p>Infected</p>
+              <div>
+                <div>
+                  <img src="/icons/arrow.svg" alt="up/down"/>
+                  <span>27k</span>
+                </div>
+                <strong>20000000</strong>
+              </div>
+            </Card>
+            <Card>
+              <p>Active</p>
+              <div>
+                <div>
+                  <img src="/icons/arrow.svg" alt="up/down"/>
+                  <span>27k</span>
+                </div>
+                <strong>20000000</strong>
+              </div>
+            </Card>
+            <Card>
+              <p>Deceased</p>
+              <div>
+                <div>
+                  <img src="/icons/arrow.svg" alt="up/down"/>
+                  <span>27k</span>
+                </div>
+                <strong>20000000</strong>
+              </div>
+            </Card>
+            <Card>
+              <p>Recovered</p>
+              <div>
+                <div>
+                  <img src="/icons/arrow.svg" alt="up/down"/>
+                  <span>27k</span>
+                </div>
+                <strong>20000000</strong>
+              </div>
+            </Card>
+          </div>
+        </WorldInfo>
+     
         <Classification>
           <SectionTitle>
             <img src="/icons/sort.svg" alt="Sort"/>
@@ -123,55 +125,55 @@ export default function Home() {
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
             <Country>
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
             <Country>
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
             <Country>
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
             <Country>
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
             <Country>
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
             <Country>
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
             <Country>
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
             <Country>
               {/* <img src="/icons/flag.svg" alt="Flags"/> */}
               <span />
               <p>United States</p>
-              <strong>1321544688</strong>
+              <strong>500000</strong>
             </Country>
           </div>
         </Classification>

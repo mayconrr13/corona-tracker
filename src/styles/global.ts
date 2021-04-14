@@ -39,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100vw;
     color: var(--text);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   body, input, textarea, button {
