@@ -17,8 +17,11 @@ interface SearchedCountryProps {
 }
 
 interface ChartsProps {
-  country: string;
-  
+  dates: string[];
+  confirmedValues: number[];
+  activeValues: number[];
+  deathsValues: number[];
+  recoveredValues: number[];
 }
 
 export function sortListByNumberOfDeaths(list: CountriesProps[]) {
@@ -70,6 +73,38 @@ export function getCountryDailyVariation(values: SearchedCountryProps[]): Search
   }
 }
 
-export function getChartsData(values: SearchedCountryProps[]) {
+export function getChartsData(values: SearchedCountryProps[]): ChartsProps {
+  let data: ChartsProps = {
+    dates: [],
+    confirmedValues: [],
+    activeValues: [],
+    deathsValues: [],
+    recoveredValues: []
+  }
 
+  values.map(dailyData => {
+    data.dates.push(dailyData.date)
+    data.confirmedValues.push(dailyData.confirmed)
+    data.activeValues.push(dailyData.confirmed - dailyData.deaths - dailyData.recovered)
+    data.deathsValues.push(dailyData.deaths)
+    data.recoveredValues.push(dailyData.recovered)
+  })
+
+  return data
+}
+
+export function selectDataColor(set: 'confirmed' | 'active' | 'deaths' | 'recovered') {
+  switch (set) {
+    case 'active':
+      return "#fdcc78"
+      break
+    case 'deaths':
+      return "#9F3DF6"
+      break
+    case 'recovered':
+      return "#00CCAD"
+      break
+    default:
+      return '#CC002C'
+  }
 }

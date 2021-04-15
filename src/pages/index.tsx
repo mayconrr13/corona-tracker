@@ -1,9 +1,12 @@
-import { Header, Background, Content, SearchBox, WorldInfo, SectionTitle, CountryStats, Card, Classification, Country, Footer } from '../styles/pages/Home'
-import Link from 'next/link'
-import api from '../services/api'
 import { FormEvent, useState } from 'react'
-import { GetStaticProps } from 'next'
-import { formatedDate, formatedVariation, getCountryDailyVariation, sortListByNumberOfDeaths } from '../utils/globalInformation'
+import { GetServerSideProps } from 'next'
+import Link from 'next/link'
+
+import api from '../services/api'
+import Charts from '../components/Charts'
+import { formatedDate, formatedVariation, getChartsData, getCountryDailyVariation, selectDataColor, sortListByNumberOfDeaths } from '../utils/globalInformation'
+
+import { Header, Background, Content, SearchBox, WorldInfo, SectionTitle, CountryStats, Card, Classification, Country, Footer, Loading } from '../styles/pages/Home'
 
 interface GlobalProps {
   date: string;
@@ -38,18 +41,29 @@ interface SearchedCountryProps {
   recovered: number
 }
 
+interface ChartsProps {
+  dates: Array<string>;
+  confirmedValues: Array<number>;
+  activeValues: Array<number>;
+  deathsValues: Array<number>;
+  recoveredValues: Array<number>;
+}
 
 export default function Home({ global, sortedList }: GlobalDataResponse) {
+
   const [country, setCountry] = useState('')
   const [countryData, setCountryData] = useState<SearchedCountryProps[]>([])
-  const [chartsData, setChartsData] = useState([])
   const [dailyVariationData, setDailyVariationData] = useState<SearchedCountryProps>({} as SearchedCountryProps)
+
   const [selectedInfo, setSelectedInfo] = useState<'confirmed' | 'active' | 'deaths' | 'recovered'>('confirmed')
+  const [selectedChartsYAxis, setSelectedChartsYAxis] = useState<number[]>([] as number[])
+  const [chartsData, setChartsData] = useState<ChartsProps>({} as ChartsProps)
+
+
   const [loading, setLoading] = useState(false);
 
   async function handleGetCountryCompleteData(event: FormEvent) {
     event.preventDefault()
-
     setLoading(true)
 
     if (country === '') {
@@ -59,10 +73,10 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
     }
     try {
       const response = await api.get(`/total/dayone/country/${country.toLowerCase()}`)
-      const completeCountryData = response.data.map(country => {
+      const completeCountryData = response.data.map((country: any) => {
         return {
           country: country.Country,
-          date: formatedDate(new Date(country.Date)),
+          date: country.Date,
           confirmed: country.Confirmed,
           active: country.Active,
           deaths: country.Deaths,
@@ -71,7 +85,7 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
       })
       
       setCountryData([...completeCountryData])
-
+      setChartsData(getChartsData(completeCountryData))
       setDailyVariationData(getCountryDailyVariation(completeCountryData))
       
     } catch (error) {
@@ -80,6 +94,25 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
 
     setCountry('')
     setLoading(false)
+  }
+
+  function handleSelectedData(set: 'confirmed' | 'active' | 'deaths' | 'recovered') {
+    setSelectedInfo(set)
+    selectDataColor(selectedInfo)
+
+    switch (set) {
+      case 'active':
+        setSelectedChartsYAxis(chartsData.activeValues)
+        break
+      case 'deaths':
+        setSelectedChartsYAxis(chartsData.deathsValues)
+        break
+      case 'recovered':
+        setSelectedChartsYAxis(chartsData.recoveredValues)
+        break
+      default:
+        setSelectedChartsYAxis(chartsData.confirmedValues)
+    }
   }
   
   return (
@@ -108,23 +141,22 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
           </div>
         </SearchBox>
        
-        <CountryStats>
-          {countryData.length ? (
-            <>
+        {countryData.length ? (
+            <CountryStats selectedInfo={selectedInfo}>
               <SectionTitle>
-                <img src="/icons/map.svg" alt="Map"/>
+                <img src="/icons/world.svg" alt="World"/>
                 <div>
                   <strong>{countryData[0].country}</strong>
-                  <span>Last update: {countryData[countryData.length - 1].date}</span>
+                  <span>Last update: {formatedDate(new Date(countryData[countryData.length - 1].date))}</span>
                 </div>
               </SectionTitle>
 
               <div>
                 <nav>
-                  <button type="button" onClick={() => setSelectedInfo('confirmed')} >Infected</button>
-                  <button type="button" onClick={() => setSelectedInfo('active')} >Active</button>
-                  <button type="button" onClick={() => setSelectedInfo('deaths')} >Deceased</button>
-                  <button type="button" onClick={() => setSelectedInfo('recovered')} >Recovered</button>
+                  <button type="button" onClick={() => handleSelectedData('confirmed')} >Infected</button>
+                  <button type="button" onClick={() => handleSelectedData('active')} >Active</button>
+                  <button type="button" onClick={() => handleSelectedData('deaths')} >Deceased</button>
+                  <button type="button" onClick={() => handleSelectedData('recovered')} >Recovered</button>
                 </nav>
 
                 {selectedInfo === 'confirmed' && (
@@ -136,9 +168,16 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
                       </div>
                       <strong>{countryData[countryData.length - 1].confirmed}</strong>
                     </div>
-                    <div className="chart"/>
+                    <div className="chart">
+                      <Charts 
+                        xAxisData={chartsData.dates}
+                        yAxisData={chartsData.confirmedValues}
+                        color={selectDataColor(selectedInfo)}
+                      />
+                    </div>
                   </>
                 )}
+                
 
                 {selectedInfo === 'active' && (
                   <>
@@ -149,7 +188,13 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
                       </div>
                       <strong>{countryData[countryData.length - 1].active}</strong>
                     </div>
-                    <div className="chart"/>
+                    <div className="chart">
+                      <Charts 
+                        xAxisData={chartsData.dates}
+                        yAxisData={chartsData.activeValues}
+                        color={selectDataColor(selectedInfo)}
+                      />
+                    </div>
                   </>
                 )}
 
@@ -160,10 +205,16 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
                         <img src="/icons/arrow.svg" alt="up/down"/>
                         <span>{dailyVariationData.deaths}</span>
                       </div>
-                      <strong>{countryData[countryData.length - 1].confirmed}</strong>
+                      <strong>{countryData[countryData.length - 1].deaths}</strong>
                     </div>
-                    <div className="chart"/>
-                  </>
+                    <div className="chart">
+                      <Charts 
+                        xAxisData={chartsData.dates}
+                        yAxisData={chartsData.deathsValues}
+                        color={selectDataColor(selectedInfo)}
+                      />
+                    </div>
+                    </>
                 )}
 
                 {selectedInfo === 'recovered' && (
@@ -175,26 +226,32 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
                       </div>
                       <strong>{countryData[countryData.length - 1].recovered}</strong>
                     </div>
-                    <div className="chart"/>
+                    <div className="chart">
+                      <Charts 
+                        xAxisData={chartsData.dates}
+                        yAxisData={chartsData.recoveredValues}
+                        color={selectDataColor(selectedInfo)}
+                      />
+                    </div>
                   </>
                 )}
-
               </div>
-            </>
+            </CountryStats>
           ) : (
-            <></>
-          )} 
-
-          {!loading && !countryData.length && (
-            <p>No results</p>
-          )}
-
-          {loading || (loading && countryData.length) &&
-            <div>
-              <span>Loading</span>
-            </div>
-          }
-        </CountryStats>
+            <Loading>
+              <SectionTitle>
+                <img src="/icons/map.svg" alt="Map"/>
+                <div>
+                  <strong>Country</strong>
+                  <span>Last update: -- / -- / ----</span>
+                </div>
+              </SectionTitle>
+              <div>
+                <img src="/icons/loading.svg" alt="loading"/>
+                {loading && <span />}
+              </div>
+            </Loading>
+          )}       
 
         <WorldInfo>
               <SectionTitle>
@@ -306,9 +363,8 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const response = await api.get('/summary').then(response => response.data)
-  // const {Global, Countries} = response
 
   const global = {
     date: formatedDate(new Date(response.Global.Date)),
@@ -338,6 +394,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       global,
       sortedList
-    }
+    },
   }
 }

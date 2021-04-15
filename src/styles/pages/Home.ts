@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 export const Header = styled.header`
   width: 100vw;
@@ -391,7 +391,11 @@ export const SectionTitle = styled.section`
   }
 `;
 
-export const CountryStats = styled.div`
+interface CountryStatsProps {
+  selectedInfo: 'confirmed' | 'active' | 'deaths' | 'recovered',
+}
+
+export const CountryStats = styled.div<CountryStatsProps>`
   margin: 0 auto;
   margin-top: 2rem;
 
@@ -414,7 +418,7 @@ export const CountryStats = styled.div`
     nav {
       width: 100%;
       max-width: 400px;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
 
       display: flex;
       align-items: center;
@@ -425,51 +429,101 @@ export const CountryStats = styled.div`
         background-color: transparent;
         color: var(--text);
         font-size: 0.8rem;
+        outline: none;
+        ${(props) => props.selectedInfo === 'confirmed' && css`
+          &:nth-child(1) {
+            font-weight: bold;
+            position: relative;
+
+            &::before {
+              content: '';
+              width: 100%;
+              height: 0.25rem;
+              background: var(--red);
+              position: absolute;
+              bottom: -0.5rem;
+              left: 0;
+            }
+          }
+        `}
+        ${(props) => props.selectedInfo === 'active' && css`
+          &:nth-child(2) {
+            font-weight: bold;
+            position: relative;
+
+            &::before {
+              content: '';
+              width: 100%;
+              height: 0.25rem;
+              background: var(--yellow);
+              position: absolute;
+              bottom: -0.5rem;
+              left: 0;
+            }
+          }
+        `}
+        ${(props) => props.selectedInfo === 'deaths' && css`
+          &:nth-child(3) {
+            font-weight: bold;
+            position: relative;
+
+            &::before {
+              content: '';
+              width: 100%;
+              height: 0.25rem;
+              background: var(--purple);
+              position: absolute;
+              bottom: -0.5rem;
+              left: 0;
+            }
+          }
+        `}
+        ${(props) => props.selectedInfo === 'recovered' && css`
+          &:nth-child(4) {
+            font-weight: bold;
+            position: relative;
+
+            &::before {
+              content: '';
+              width: 100%;
+              height: 0.25rem;
+              background: var(--green);
+              position: absolute;
+              bottom: -0.5rem;
+              left: 0;
+            }
+          }
+        `}
       }
     }
 
     nav + div {
-    margin: 0 auto 1.5rem auto;
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: 1fr max-content(4rem);
-    grid-template-rows: 1.5rem 3rem;
-    gap: 0px 0px;
-    grid-template-areas:
-      ". variation"
-      "value .";
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin: 0 auto;
 
       > div {
-        grid-area: variation;
-        height: 100%;
-        max-height: 1.5rem;
-        margin-top: auto;
+        color: var(--yellow);
+        margin: 0 0 0 auto;
 
         img {
-          
-        }
-
-        span {
-          color: var(--yellow);
+          margin-right: 0.5rem;
         }
       }
 
       strong {
-        grid-area: value;
-        margin-left: auto;
         max-height: 3rem;
+        margin-right: 2rem;
         font-size: 1.75rem;
       }
-
     }
 
     > div.chart {
-      width: 100%;
-      /* height: 100%; */
+      margin: 0 auto;
+      width: 90%;
+      min-height: 250px;
       flex: 1;
-
-      background-color: var(--yellow);
     }
   }
 
@@ -485,6 +539,11 @@ export const CountryStats = styled.div`
           font-size: 1rem;
         }
       }
+
+      > div.chart {
+      min-height: 0;
+      flex: 1;
+    }
     }
   }
 `;
@@ -604,5 +663,66 @@ export const Footer = styled.footer`
         color: var(--text);
       }
     }
+  }
+`;
+
+
+const loadingAnimation = keyframes`
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+`
+
+export const Loading = styled.div`
+  margin: 0 auto;
+  margin-top: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 26rem;
+
+  > div {
+    background-color: var(--gray-700);
+    border-radius: 0.5rem;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    > span {
+      width: 7rem;
+      height: 7rem;
+        
+      position: absolute;
+
+      border-radius: 50%;
+      border: 2px solid var(--text);
+      border-color: transparent transparent transparent var(--text);
+      animation: ${loadingAnimation} 1s infinite linear;
+    }
+
+    img {
+      width: 6rem;
+      height: auto;
+      margin: auto;
+    }
+
+  } 
+
+  @media (min-width: 1050px) {
+    grid-area: country;
+    margin: 0;
+    max-width: 775px;
+    height: 100%;
   }
 `;
