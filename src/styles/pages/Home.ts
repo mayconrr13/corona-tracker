@@ -359,7 +359,7 @@ export const Card = styled.div`
       }
 
       strong {
-        margin: 0;
+        margin-right: 1rem;
       }
     }
   }
@@ -540,9 +540,10 @@ export const Country = styled.div`
   border-bottom: 1px solid var(--gray-100);
 
   // SPAN ---> IMG
-  span {
+  span, img {
     width: 2rem;
     height: 2rem;
+    object-fit: cover;
     border-radius: 1rem;
     background-color: #ffffff;
 
