@@ -1,53 +1,16 @@
 import { FormEvent, useState } from 'react'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Link from 'next/link'
+import { ChartsProps, GlobalDataResponse, SearchedCountryProps } from '../utils/types'
 
 import api from '../services/api'
-import Charts from '../components/Charts'
-import { formatedDate, formatedVariation, getChartsData, getCountryDailyVariation, selectDataColor, sortListByNumberOfDeaths } from '../utils/globalInformation'
+import { formatedDate, getChartsData, getCountryDailyVariation, sortListByNumberOfDeaths } from '../utils/globalInformation'
 
-import { Header, Background, Content, SearchBox, WorldInfo, SectionTitle, CountryStats, Card, Classification, Country, Footer, Loading } from '../styles/pages/Home'
+import { Header, Background, Content, SearchBox, WorldInfo, CountryStats, Classification, Country, Footer, EmptyBox } from '../styles/pages/Home'
 
-interface GlobalProps {
-  date: string;
-  newConfirmed: number;
-  newDeaths: number;
-  newRecovered: number;
-  newActive: number;
-  totalConfirmed: number;
-  totalDeaths: number;
-  totalRecovered: number;
-  totalActive: number;
-}
-
-interface CountriesProps {
-  id: string;
-  countryName: string;
-  countryCode: string;
-  totalDeaths: number;
-}
-
-interface GlobalDataResponse {
-  global: GlobalProps;
-  sortedList: CountriesProps[];
-}
-
-interface SearchedCountryProps {
-  country: string;
-  date: string,
-  confirmed: number,
-  active: number,
-  deaths: number,
-  recovered: number
-}
-
-interface ChartsProps {
-  dates: Array<string>;
-  confirmedValues: Array<number>;
-  activeValues: Array<number>;
-  deathsValues: Array<number>;
-  recoveredValues: Array<number>;
-}
+import { Section } from '../components/Section'
+import { InfoCard } from '../components/InfoCard'
+import { CountryCases } from '../components/CountryCases'
 
 export default function Home({ global, sortedList }: GlobalDataResponse) {
 
@@ -56,13 +19,13 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
   const [dailyVariationData, setDailyVariationData] = useState<SearchedCountryProps>({} as SearchedCountryProps)
 
   const [selectedInfo, setSelectedInfo] = useState<'confirmed' | 'active' | 'deaths' | 'recovered'>('confirmed')
-  const [selectedChartsYAxis, setSelectedChartsYAxis] = useState<number[]>([] as number[])
+
   const [chartsData, setChartsData] = useState<ChartsProps>({} as ChartsProps)
 
 
   const [loading, setLoading] = useState(false);
 
-  async function handleGetCountryCompleteData(event: FormEvent) {
+  async function handleGetCountryCompleteData(event: FormEvent): Promise<void> {
     event.preventDefault()
     setLoading(true)
 
@@ -73,7 +36,7 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
     }
     try {
       const response = await api.get(`/total/dayone/country/${country.toLowerCase()}`)
-      const completeCountryData = response.data.map((country: any) => {
+      const completeCountryData: SearchedCountryProps[] = response.data.map((country: any) => {
         return {
           country: country.Country,
           date: country.Date,
@@ -85,34 +48,16 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
       })
       
       setCountryData([...completeCountryData])
-      setChartsData(getChartsData(completeCountryData))
       setDailyVariationData(getCountryDailyVariation(completeCountryData))
       
+      setChartsData(getChartsData(completeCountryData))
     } catch (error) {
       alert(`Error: ${error.message}`)
     }
 
     setCountry('')
     setLoading(false)
-  }
-
-  function handleSelectedData(set: 'confirmed' | 'active' | 'deaths' | 'recovered') {
-    setSelectedInfo(set)
-    selectDataColor(selectedInfo)
-
-    switch (set) {
-      case 'active':
-        setSelectedChartsYAxis(chartsData.activeValues)
-        break
-      case 'deaths':
-        setSelectedChartsYAxis(chartsData.deathsValues)
-        break
-      case 'recovered':
-        setSelectedChartsYAxis(chartsData.recoveredValues)
-        break
-      default:
-        setSelectedChartsYAxis(chartsData.confirmedValues)
-    }
+    return 
   }
   
   return (
@@ -120,12 +65,6 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
       <Header>
         <div>
           <img src="/logo.svg" alt="Logo"/>
-
-          {/* <button type="button">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button> */}
         </div>
       </Header>
         
@@ -143,205 +82,68 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
        
         {countryData.length ? (
             <CountryStats selectedInfo={selectedInfo}>
-              <SectionTitle>
-                <img src="/icons/world.svg" alt="World"/>
-                <div>
-                  <strong>{countryData[0].country}</strong>
-                  <span>Last update: {formatedDate(new Date(countryData[countryData.length - 1].date))}</span>
-                </div>
-              </SectionTitle>
+              <Section icon="world" title={countryData[0].country} date={formatedDate(new Date(countryData[countryData.length - 1].date))} />
 
               <div>
                 <nav>
-                  <button type="button" onClick={() => handleSelectedData('confirmed')} >Infected</button>
-                  <button type="button" onClick={() => handleSelectedData('active')} >Active</button>
-                  <button type="button" onClick={() => handleSelectedData('deaths')} >Deceased</button>
-                  <button type="button" onClick={() => handleSelectedData('recovered')} >Recovered</button>
+                  <button type="button" onClick={() => setSelectedInfo('confirmed')} className={selectedInfo === 'confirmed' ? 'active' : ''} >Infected</button>
+                  <button type="button" onClick={() => setSelectedInfo('active')} className={selectedInfo === 'active' ? 'active' : ''} >Active</button>
+                  <button type="button" onClick={() => setSelectedInfo('deaths')} className={selectedInfo === 'deaths' ? 'active' : ''} >Deaths</button>
+                  <button type="button" onClick={() => setSelectedInfo('recovered')} className={selectedInfo === 'recovered' ? 'active' : ''} >Recovered</button>
                 </nav>
 
-                {selectedInfo === 'confirmed' && (
-                  <>
-                    <div>
-                      <div>
-                        <img src="/icons/arrow.svg" alt="up/down"/>
-                        <span>{dailyVariationData.confirmed}</span>
-                      </div>
-                      <strong>{countryData[countryData.length - 1].confirmed}</strong>
-                    </div>
-                    <div className="chart">
-                      <Charts 
-                        xAxisData={chartsData.dates}
-                        yAxisData={chartsData.confirmedValues}
-                        color={selectDataColor(selectedInfo)}
-                      />
-                    </div>
-                  </>
-                )}
-                
-
-                {selectedInfo === 'active' && (
-                  <>
-                    <div>
-                      <div>
-                        <img src="/icons/arrow.svg" alt="up/down"/>
-                        <span>{dailyVariationData.active}</span>
-                      </div>
-                      <strong>{countryData[countryData.length - 1].active}</strong>
-                    </div>
-                    <div className="chart">
-                      <Charts 
-                        xAxisData={chartsData.dates}
-                        yAxisData={chartsData.activeValues}
-                        color={selectDataColor(selectedInfo)}
-                      />
-                    </div>
-                  </>
-                )}
-
-                {selectedInfo === 'deaths' && (
-                  <>
-                    <div>
-                      <div>
-                        <img src="/icons/arrow.svg" alt="up/down"/>
-                        <span>{dailyVariationData.deaths}</span>
-                      </div>
-                      <strong>{countryData[countryData.length - 1].deaths}</strong>
-                    </div>
-                    <div className="chart">
-                      <Charts 
-                        xAxisData={chartsData.dates}
-                        yAxisData={chartsData.deathsValues}
-                        color={selectDataColor(selectedInfo)}
-                      />
-                    </div>
-                    </>
-                )}
-
-                {selectedInfo === 'recovered' && (
-                  <>
-                    <div>
-                      <div>
-                        <img src="/icons/arrow.svg" alt="up/down"/>
-                        <span>{dailyVariationData.recovered}</span>
-                      </div>
-                      <strong>{countryData[countryData.length - 1].recovered}</strong>
-                    </div>
-                    <div className="chart">
-                      <Charts 
-                        xAxisData={chartsData.dates}
-                        yAxisData={chartsData.recoveredValues}
-                        color={selectDataColor(selectedInfo)}
-                      />
-                    </div>
-                  </>
-                )}
+                <CountryCases 
+                  variation={dailyVariationData}
+                  selectedData={selectedInfo} 
+                  countryData={countryData} 
+                  chartData={{
+                    xAxis: chartsData.dates, 
+                    yAxis: chartsData[selectedInfo]
+                  }}
+                />
               </div>
             </CountryStats>
           ) : (
-            <Loading>
-              <SectionTitle>
-                <img src="/icons/map.svg" alt="Map"/>
-                <div>
-                  <strong>Country</strong>
-                  <span>Last update: -- / -- / ----</span>
-                </div>
-              </SectionTitle>
+            <EmptyBox>
+              <Section icon="map" title="Country" date="-- / -- / ----" />
               <div>
                 <img src="/icons/loading.svg" alt="loading"/>
                 {loading && <span />}
               </div>
-            </Loading>
+            </EmptyBox>
           )}       
 
         <WorldInfo>
-              <SectionTitle>
-                <img src="/icons/map.svg" alt="Map"/>
-                <div>
-                  <strong>World Scenary</strong>
-                  <span>Last update: {global.date}</span>
-                </div>
-              </SectionTitle>
+              <Section icon="world" title="World Scenary" date={global.date} />
               <div>
-                <Card>
-                  <p>Infected</p>
-                  <div>
-                    <div>
-                      <img src="/icons/arrow.svg" alt="up/down"/>
-                      <span>{formatedVariation(global.newConfirmed)}</span>
-                    </div>
-                    <strong>{global.totalConfirmed}</strong>
-                  </div>
-                </Card>
-                <Card>
-                  <p>Active</p>
-                  <div>
-                    <div>
-                      <img src="/icons/arrow.svg" alt="up/down"/>
-                      <span>{formatedVariation(global.newActive)}</span>
-                    </div>
-                    <strong>{global.totalActive}</strong>
-                  </div>
-                </Card>
-                <Card>
-                  <p>Deaths</p>
-                  <div>
-                    <div>
-                      <img src="/icons/arrow.svg" alt="up/down"/>
-                      <span>{formatedVariation(global.newDeaths)}</span>
-                    </div>
-                    <strong>{global.newDeaths}</strong>
-                  </div>
-                </Card>
-                <Card>
-                  <p>Recovered</p>
-                  <div>
-                    <div>
-                      <img src="/icons/arrow.svg" alt="up/down"/>
-                      <span>{formatedVariation(global.newRecovered)}</span>
-                    </div>
-                    <strong>{global.newRecovered}</strong>
-                  </div>
-                </Card>
+                <InfoCard title="Infected" cases={global.newConfirmed} />
+                <InfoCard title="Active" cases={global.newActive} />
+                <InfoCard title="Deaths" cases={global.newDeaths} />
+                <InfoCard title="Recovered" cases={global.newRecovered} />
               </div>
         </WorldInfo>
      
         <Classification>
           { global && sortedList ? (
             <>
-              <SectionTitle>
-                <img src="/icons/sort.svg" alt="Sort"/>
-                <div>
-                  <strong>Death by country</strong>
-                  <span>Last update: {global.date}</span>
-                </div>
-              </SectionTitle>
+              <Section icon="sort" title="Death by country" date={global.date} />
 
               <div>
                 {sortedList && sortedList.map(country => {
                   return (
                     <Country key={country.id}>
-                      <img src={`https://flagcdn.com/${country.countryCode.toLowerCase()}.svg`} alt="Flags"/>
+                      <img src={`https://flagcdn.com/${country.countryCode.toLowerCase()}.svg`} alt={country.countryCode}/>
                       <p>{country.countryName}</p>
                       <strong>{country.totalDeaths}</strong>
                     </Country>
                   )
-                })}
-
-                {/* <Country>
-                  <img src={`https://flagcdn.com/br.svg`} alt="Flags"/>
-                  <p>Brazil</p>
-                  <strong>20</strong>
-                </Country> */}
-                
+                })}                
               </div>
             </>
           ) : (
             <p>No results</p>
           )}
-
-          
         </Classification>
-
       </Content>
 
       <Footer>
@@ -363,7 +165,7 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const response = await api.get('/summary').then(response => response.data)
 
   const global = {
@@ -395,5 +197,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       global,
       sortedList
     },
+    revalidate: 60 * 60 * 12 //12horas
   }
 }

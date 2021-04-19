@@ -1,28 +1,71 @@
-# TypeScript & Styled Components Next.js example
+<img alt="Banner" title="To-Do-Next" src="./public/banner.png" />
 
-This is a really simple project that show the usage of Next.js with TypeScript and Styled Components.
+<h4 align="center"> 
+	Projeto concluído! 
+</h4>
+<p align="left">Corona Tracker é uma aplicação que possibilita o usuário verificar a situação da pandemia do Corona Vírus no mundo. Todos os dados utilizados são dinâmicos e obtidos de uma api externa.</p>
+<p>A aplicação é divida em três partes principais. A primeira parte permite que o usuário pesquise o país de sua escolha e verifique os dados de número de infectados, casos ativos, mortes e recuperados. As informações são apresentadas em texto e em gráficos com o uso do Appex Charts</p>
+<p>A segunda parte é carregada automaticamente com as mesmas informações da primeira parte, porém agora para nível mundial. Já a terceira parte mostra o ranking dos países com base no número de mortes ocasionados pelo corona vírus. As informações de nível global são geradas estaticamente com revalidação a cada 12 horas através da utilização do getStaticProps disponível no NextJS</p>
+<p>O design de toda a aplicação foi desenvolvido no Figma, garantindo melhor responsividade para a aplicação em telas desktop e mobile.</p>
 
-## Deploy your own
+### Tecnologias utilizadas
+---
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+* NextJS
+* TypeScript
+* Styled Components
+* Appex charts
+* Covid 19 API
+* Figma
+* Date-FNS
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript-styled-components&project-name=with-typescript-styled-components&repository-name=with-typescript-styled-components)
+### Features
+---
 
-## How to use it?
+- [x] Pesquisa dinâmica da situação da pandemia em cada país
+- [x] Dados apresentados em formato de texto e em gráficos
+- [x] Situação da pandemia em nível global
+- [x] Ranking dos países com o maior número de mortes
+- [x] Geração de dados estáticos para a situação mundial e para o ranking com o getStaticProps do NextJS
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+### Screenshots
+---
+* Projeto no Figma
+<img alt="mobile" title="corona-tracker-mobile" src="./public/figma.png"/>
+
+* Mobile
+<img alt="mobile-country" title="corona-tracker-mobile" src="./public/mobile-country.png"/>
+<img alt="mobile-world" title="corona-tracker-mobile" src="./public/mobile-world.png"/>
+<img alt="mobile-ranking" title="corona-tracker-mobile" src="./public/mobile-ranking.png"/>
+
+* Web
+<img alt="web-home" title="corona-tracker-web" src="./public/home.png" />
+<img alt="web-loading" title="corona-tracker-web" src="./public/loading.png" />
+<img alt="web-confirmed" title="corona-tracker-web" src="./public/confirmed.png" />
+
+### Como instalar
+---
 
 ```bash
-npx create-next-app --example with-typescript-styled-components with-typescript-styled-components-app
-# or
-yarn create next-app --example with-typescript-styled-components with-typescript-styled-components-app
+# Clone este repositório
+$ git clone https://github.com/mayconrr13/corona-tracker.git
+
+# Instale as dependências
+$ yarn 
+
+# Execute a aplicação
+$ yarn dev
+
+# Acesse a aplicação
+$ http://localhost:3000
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+### Autor
+---
 
-## Notes
+Maycon dos Reis Rosário
 
-This is an amalgamation of the 2 existing examples:
+### Entre em contato!
 
-- [with-typescript](https://github.com/vercel/next.js/tree/canary/examples/with-typescript)
-- [with-styled-components](https://github.com/vercel/next.js/tree/canary/examples/with-styled-components)
+[![Linkedin Badge](https://img.shields.io/badge/-Maycon-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/mayconreisrosario/)](https://www.linkedin.com/in/mayconreisrosario/) 
+[![Gmail Badge](https://img.shields.io/badge/-mayconrr13@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:mayconrr13@gmail.com)](mailto:mayconrr13@gmail.com)

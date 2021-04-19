@@ -1,31 +1,8 @@
 import { format } from 'date-fns'
+import { ChartsProps, SearchedCountryProps, SortedListProps } from './types'
 
-interface CountriesProps {
-  id: string;
-  country: string;
-  countryCode: string;
-  totalDeaths: number;
-}
-
-interface SearchedCountryProps {
-  country: string,
-  date: string,
-  confirmed: number,
-  active: number,
-  deaths: number,
-  recovered: number
-}
-
-interface ChartsProps {
-  dates: string[];
-  confirmedValues: number[];
-  activeValues: number[];
-  deathsValues: number[];
-  recoveredValues: number[];
-}
-
-export function sortListByNumberOfDeaths(list: CountriesProps[]) {
-  const compareItems = (item1: CountriesProps, item2: CountriesProps) => {
+export function sortListByNumberOfDeaths(list: SortedListProps[]) {
+  const compareItems = (item1: SortedListProps, item2: SortedListProps) => {
     if (item1.totalDeaths < item2.totalDeaths)
      return -1;
     if (item1.totalDeaths > item2.totalDeaths)
@@ -76,25 +53,25 @@ export function getCountryDailyVariation(values: SearchedCountryProps[]): Search
 export function getChartsData(values: SearchedCountryProps[]): ChartsProps {
   let data: ChartsProps = {
     dates: [],
-    confirmedValues: [],
-    activeValues: [],
-    deathsValues: [],
-    recoveredValues: []
+    confirmed: [],
+    active: [],
+    deaths: [],
+    recovered: []
   }
 
   values.map(dailyData => {
     data.dates.push(dailyData.date)
-    data.confirmedValues.push(dailyData.confirmed)
-    data.activeValues.push(dailyData.confirmed - dailyData.deaths - dailyData.recovered)
-    data.deathsValues.push(dailyData.deaths)
-    data.recoveredValues.push(dailyData.recovered)
+    data.confirmed.push(dailyData.confirmed)
+    data.active.push(dailyData.confirmed - dailyData.deaths - dailyData.recovered)
+    data.deaths.push(dailyData.deaths)
+    data.recovered.push(dailyData.recovered)
   })
 
   return data
 }
 
-export function selectDataColor(set: 'confirmed' | 'active' | 'deaths' | 'recovered') {
-  switch (set) {
+export function selectDataColor(colorSet: 'confirmed' | 'active' | 'deaths' | 'recovered') {
+  switch (colorSet) {
     case 'active':
       return "#fdcc78"
       break

@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 export const Header = styled.header`
   width: 100vw;
@@ -261,138 +261,16 @@ export const WorldInfo = styled.div`
   }
 `;
 
-export const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-height: 123px;
-
-  padding: 1rem;
-  background-color: var(--gray-700);
-  width: 100%;
-  border-radius: 0.5rem;
-
-  p {
-    color: var(--gray-100);
-    text-align: left;
-    font-size: 1rem;
-
-    position: relative;
-    padding-left: 1rem;
-
-    &::before {
-      content: '';
-      width: 8px;
-      height: 100%;      
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-  }
-
-  > div {
-    margin: 1.5rem auto 0 auto;
-    
-    display: grid;
-    grid-template-columns: 1fr fit-content(4rem);
-    grid-template-rows: 1.5rem 1.5rem 1fr;
-    gap: 0px 0px;
-    grid-template-areas:
-      ". variation"
-      "value ."
-      "chart chart";
-
-    > div{
-      grid-area: variation;
-      max-width: 3rem;
-      height: 100%;
-      max-height: 1.5rem;
-      margin-top: auto;
-      display: flex;
-
-
-      img {
-        height: 0.8rem;
-        width: auto;
-      }
-
-      span {
-        color: var(--yellow);
-        font-size: 0.75rem;
-      }
-    }
-
-    strong {
-      grid-area: value;
-      font-size: 1.25rem;
-      margin-left: auto
-    }
-  }
-
-  @media (min-width: 550px) {
-    > div {
-      div {
-        img{
-          height: 1rem;
-          width: auto;
-        }
-
-        span {
-          font-size: 1rem;
-        }
-      }
-
-      strong {
-        font-size: 1.5rem;
-      }
-    }
-  }
-
-  @media (min-width: 1050px) {
-    > div {
-      display: flex;
-      flex-direction: column;
-      height: 3rem;
-      width: 100%;
-
-      > div {
-        margin: 0 0 0 auto;
-      }
-
-      strong {
-        margin-right: 1rem;
-      }
-    }
-  }
-`;
-
-export const SectionTitle = styled.section`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  margin-bottom: 1.5rem;
-
-  > div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    margin-left: 1rem;
-
-    strong {
-      font-size: 1.5rem;
-      color: var(--text);
-    }
-
-    span {
-      font-size: 0.75rem;
-      color: var(--gray-100);
-    }
-  }
-`;
 
 interface CountryStatsProps {
   selectedInfo: 'confirmed' | 'active' | 'deaths' | 'recovered',
+}
+
+const colors = {
+  'confirmed': '#CC002C',
+  'active': '#fdcc78',
+  'deaths': '#9F3DF6',
+  'recovered': '#00CCAD',
 }
 
 export const CountryStats = styled.div<CountryStatsProps>`
@@ -430,70 +308,23 @@ export const CountryStats = styled.div<CountryStatsProps>`
         color: var(--text);
         font-size: 0.8rem;
         outline: none;
-        ${(props) => props.selectedInfo === 'confirmed' && css`
-          &:nth-child(1) {
-            font-weight: bold;
-            position: relative;
+        position: relative;
+        
+        &.active {
+          font-weight: bold;
 
-            &::before {
-              content: '';
-              width: 100%;
-              height: 0.25rem;
-              background: var(--red);
-              position: absolute;
-              bottom: -0.5rem;
-              left: 0;
-            }
-          }
-        `}
-        ${(props) => props.selectedInfo === 'active' && css`
-          &:nth-child(2) {
-            font-weight: bold;
-            position: relative;
+          &::before {
+            content: '';
+            width: 100%;
+            height: 0.25rem;
 
-            &::before {
-              content: '';
-              width: 100%;
-              height: 0.25rem;
-              background: var(--yellow);
-              position: absolute;
-              bottom: -0.5rem;
-              left: 0;
-            }
-          }
-        `}
-        ${(props) => props.selectedInfo === 'deaths' && css`
-          &:nth-child(3) {
-            font-weight: bold;
-            position: relative;
+            background-color: ${props => colors[props.selectedInfo]};
 
-            &::before {
-              content: '';
-              width: 100%;
-              height: 0.25rem;
-              background: var(--purple);
-              position: absolute;
-              bottom: -0.5rem;
-              left: 0;
-            }
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
           }
-        `}
-        ${(props) => props.selectedInfo === 'recovered' && css`
-          &:nth-child(4) {
-            font-weight: bold;
-            position: relative;
-
-            &::before {
-              content: '';
-              width: 100%;
-              height: 0.25rem;
-              background: var(--green);
-              position: absolute;
-              bottom: -0.5rem;
-              left: 0;
-            }
-          }
-        `}
+        }
       }
     }
 
@@ -502,28 +333,6 @@ export const CountryStats = styled.div<CountryStatsProps>`
       flex-direction: column;
       align-items: flex-end;
       margin: 0 auto;
-
-      > div {
-        color: var(--yellow);
-        margin: 0 0 0 auto;
-
-        img {
-          margin-right: 0.5rem;
-        }
-      }
-
-      strong {
-        max-height: 3rem;
-        margin-right: 2rem;
-        font-size: 1.75rem;
-      }
-    }
-
-    > div.chart {
-      margin: 0 auto;
-      width: 90%;
-      min-height: 250px;
-      flex: 1;
     }
   }
 
@@ -539,11 +348,6 @@ export const CountryStats = styled.div<CountryStatsProps>`
           font-size: 1rem;
         }
       }
-
-      > div.chart {
-      min-height: 0;
-      flex: 1;
-    }
     }
   }
 `;
@@ -677,7 +481,7 @@ const loadingAnimation = keyframes`
   }
 `
 
-export const Loading = styled.div`
+export const EmptyBox = styled.div`
   margin: 0 auto;
   margin-top: 2rem;
 
