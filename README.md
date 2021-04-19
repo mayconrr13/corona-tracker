@@ -34,14 +34,14 @@
 <img alt="mobile" title="corona-tracker-mobile" src="./public/figma.png"/>
 
 * Mobile
-<img alt="mobile-country" title="corona-tracker-mobile" src="./public/mobile-country.png"/>
-<img alt="mobile-world" title="corona-tracker-mobile" src="./public/mobile-world.png"/>
-<img alt="mobile-ranking" title="corona-tracker-mobile" src="./public/mobile-ranking.png"/>
+<img alt="mobile-country" title="corona-tracker-mobile" src="./public/mobile-country1.png"/>
+<img alt="mobile-world" title="corona-tracker-mobile" src="./public/mobile-world1.png"/>
+<img alt="mobile-ranking" title="corona-tracker-mobile" src="./public/mobile-ranking1.png"/>
 
 * Web
-<img alt="web-home" title="corona-tracker-web" src="./public/home.png" />
-<img alt="web-loading" title="corona-tracker-web" src="./public/loading.png" />
-<img alt="web-confirmed" title="corona-tracker-web" src="./public/confirmed.png" />
+<img alt="web-home" title="corona-tracker-web" src="./public/home1.png" />
+<img alt="web-loading" title="corona-tracker-web" src="./public/loading1.png" />
+<img alt="web-confirmed" title="corona-tracker-web" src="./public/confirmed1.png" />
 
 ### Como instalar
 ---
