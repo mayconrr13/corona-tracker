@@ -116,10 +116,10 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
         <WorldInfo>
               <Section icon="world" title="World Scenary" date={global.date} />
               <div>
-                <InfoCard title="Infected" cases={global.newConfirmed} />
-                <InfoCard title="Active" cases={global.newActive} />
-                <InfoCard title="Deaths" cases={global.newDeaths} />
-                <InfoCard title="Recovered" cases={global.newRecovered} />
+                <InfoCard title="Infected" newCases={global.newConfirmed} cases={global.totalConfirmed} />
+                <InfoCard title="Active" newCases={global.newActive} cases={global.totalActive} />
+                <InfoCard title="Deaths" newCases={global.newDeaths} cases={global.totalDeaths} />
+                <InfoCard title="Recovered" newCases={global.newRecovered} cases={global.totalRecovered} />
               </div>
         </WorldInfo>
      
@@ -157,6 +157,11 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
           <Link href="https://www.linkedin.com/in/mayconreisrosario/">
             <a>
               <img src="/icons/linkedin.svg" alt="Linkedin"/>
+            </a>
+          </Link>
+          <Link href="https://mayconrr.vercel.app/">
+            <a>
+              <img src="/icons/link.svg" alt="Portifólio"/>
             </a>
           </Link>
         </div>
