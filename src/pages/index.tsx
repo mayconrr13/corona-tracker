@@ -1,5 +1,7 @@
 import { FormEvent, useState } from 'react'
 import { GetStaticProps } from 'next'
+
+import Head from 'next/head'
 import Link from 'next/link'
 import { ChartsProps, GlobalDataResponse, SearchedCountryProps } from '../utils/types'
 
@@ -62,6 +64,10 @@ export default function Home({ global, sortedList }: GlobalDataResponse) {
   
   return (
     <>
+      <Head>
+        <title>Corona Tracker</title>
+      </Head>
+
       <Header>
         <div>
           <img src="/logo.svg" alt="Logo"/>
